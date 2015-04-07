@@ -35,3 +35,7 @@ The handler will create incident based on the words present in the check output.
       '4' => ['resolved', 'operating normally', 'recover', 'restor', 'returned to normal'] # Fixed
     }
 ```
+
+Something like this:
+
+![CachetHQ-Incidents](https://raw.githubusercontent.com/bimlendu/sensu-cachethq/master/CachetHQ%20-%20Incidents.png)
