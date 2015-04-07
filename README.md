@@ -36,6 +36,6 @@ The handler will create incident based on the words present in the check output.
     }
 ```
 
-Something like this:
+Something like this, based on the incident output.
 
 ![CachetHQ-Incidents](https://raw.githubusercontent.com/bimlendu/sensu-cachethq/master/CachetHQ%20-%20Incidents.png)
