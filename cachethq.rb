@@ -20,15 +20,15 @@ class CachetHQ < Sensu::Handler
 
   def incident_status(op)
     status = {
-      '1' => ['investigation', 'are investigating', 'investigate', 'experiencing', 'experienced'], # Investigating
+      '1' => ['investigation', 'are investigating', 'investigate'], # Investigating
       '2' => ['identified', 'addressed the root cause'], # Identified
-      '3' => ['monitoring', 'to monitor', 'are working', 'working to', 'working on', 'work to', 'continue to work on', 'continuing to work on'], # Watching
-      '4' => ['resolved', 'operating normally', 'recover', 'recovery', 'restore', 'restored', 'restoring', 'returned to normal'] # Fixed
+      '3' => ['monitor', 'progress'], # Watching
+      '4' => ['resolved', 'operating normally', 'recover', 'restor', 'returned to normal'] # Fixed
     }
 
     status.each do |state, verbs|
       verbs.each do |verb|
-        if op.include? verb
+        if op.downcase.include? verb
           incident_state = state
           return incident_state
         end
@@ -40,10 +40,8 @@ class CachetHQ < Sensu::Handler
   def verify_response(response)
     case response
     when Net::HTTPSuccess
-      puts 'CachetHQ put ok.'
       true
     else
-      puts 'CachetHQ put failed.'
       fail response.error!
     end
   end
@@ -64,6 +62,10 @@ class CachetHQ < Sensu::Handler
     @event['check']['cachethq']['component']['id']
   end
 
+  def component_name
+    @event['check']['cachethq']['component']['name']
+  end
+
   def component_status
     case @event['check']['status'].to_i
     when 0, 1, 2
@@ -75,11 +77,23 @@ class CachetHQ < Sensu::Handler
   end
 
   def incident_name
-    @event['check']['output'].lines.first.split(':').last.strip
+    component_name + ' :: ' + @event['check']['output'].lines.first.split(':').last.strip
   end
 
   def incident_message
     @event['check']['output'].lines.last.strip
+  end
+
+  def check_for_duplicate_incidents(name, msg, status)
+    uri = URI.parse(api_url + '/incidents')
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Get.new(uri.request_uri)
+    response = http.request(request)
+    result = JSON.parse(response.body)
+    result['data'].each do |res|
+      return false if res['name'] == name && res['message'] == msg && res['status'] == status
+    end
+    true
   end
 
   def update_cachet(route, data)
@@ -101,8 +115,10 @@ class CachetHQ < Sensu::Handler
     component_data = { 'status' => component_status }
     update_cachet(component_route, component_data)
     incident_route = '/incidents'
-    incident_data = { 'name' => incident_name, 'message' => incident_message, 'status' => incident_status(@event['check']['output']), 'component_id' =>  component_id, 'component_status' => component_status }
-    update_cachet(incident_route, incident_data)
+    incident_data = { 'name' => incident_name, 'message' => incident_message, 'status' => incident_status(@event['check']['output']).to_i, 'component_id' =>  component_id, 'component_status' => component_status }
+    if check_for_duplicate_incidents(incident_name, incident_message, incident_status(@event['check']['output']).to_i)
+      update_cachet(incident_route, incident_data)
+    end
   rescue => e
     puts "Exception occured : #{e.message}", e.backtrace
   end
