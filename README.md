@@ -28,10 +28,10 @@ The handler needs `cachethq` key/values as mentioned above to correlate check wi
 The handler will create incident based on the words present in the check output.
 
 ```
-status = {
-      '1' => ['investigation', 'are investigating', 'investigate', 'experiencing', 'experienced'], # Investigating
+ status = {
+      '1' => ['investigation', 'are investigating', 'investigate'], # Investigating
       '2' => ['identified', 'addressed the root cause'], # Identified
-      '3' => ['monitoring', 'to monitor', 'are working', 'working to', 'working on', 'work to', 'continue to work on', 'continuing to work on'], # Watching
-      '4' => ['resolved', 'operating normally', 'recover', 'recovery', 'restore', 'restored', 'restoring', 'returned to normal'] # Fixed
+      '3' => ['monitor', 'progress'], # Watching
+      '4' => ['resolved', 'operating normally', 'recover', 'restor', 'returned to normal'] # Fixed
     }
 ```
