@@ -101,7 +101,7 @@ class CachetHQ < Sensu::Handler
     component_data = { 'status' => component_status }
     update_cachet(component_route, component_data)
     incident_route = '/incidents'
-    incident_data = { 'name' => incident_name, 'message' => inicident_message, 'status' => incident_status(@event['check']['output']), 'component_id' =>  component_id, 'component_status' => component_status }
+    incident_data = { 'name' => incident_name, 'message' => incident_message, 'status' => incident_status(@event['check']['output']), 'component_id' =>  component_id, 'component_status' => component_status }
     update_cachet(incident_route, incident_data)
   rescue => e
     puts "Exception occured : #{e.message}", e.backtrace
