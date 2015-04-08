@@ -1,4 +1,16 @@
 #!/usr/bin/env ruby
+#
+# Sensu Handler: CachetHQ
+#
+# This handler updates CachetHQ, creates incidents and/or updates components based on a check result.
+#
+# Requires: net/http
+#
+# Copyright 2015 Bimlendu Mishra <justbimlendu@gmail.com>
+#
+# Released under the same terms as Sensu (the MIT license); see LICENSE
+# for details.
+# 
 
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-handler'
