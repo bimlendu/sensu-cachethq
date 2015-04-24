@@ -1,8 +1,8 @@
 # sensu-cachethq
 
-Sensu handler for [CachetHQ](https://cachethq.io)
+[Sensu](http://sensuapp.org/) handler for [CachetHQ](https://cachethq.io)
 
-In Sensu, define a check like below:
+In Sensu, define a check:
 
 ```
 {
@@ -23,7 +23,7 @@ In Sensu, define a check like below:
 }
 ```
 
-The handler needs `cachethq` key/values as mentioned above to correlate check with CachetHQ component.
+The handler needs `cachethq` key/values as mentioned above to correlate checks with CachetHQ component.
 
 The handler will create incident based on the words present in the check output.
 
@@ -39,3 +39,6 @@ The handler will create incident based on the words present in the check output.
 Something like this, based on the incident output.
 
 ![CachetHQ-Incidents](https://raw.githubusercontent.com/bimlendu/sensu-cachethq/master/CachetHQ%20-%20Incidents.png)
+
+More on sensu checks: http://sensuapp.org/docs/0.17/getting-started-with-checks
+More on handlers: http://sensuapp.org/docs/0.17/getting-started-with-handlers
