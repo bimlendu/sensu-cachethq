@@ -41,4 +41,6 @@ Something like this, based on the incident output.
 ![CachetHQ-Incidents](https://raw.githubusercontent.com/bimlendu/sensu-cachethq/master/CachetHQ%20-%20Incidents.png)
 
 More on sensu checks: http://sensuapp.org/docs/0.17/getting-started-with-checks
+
+
 More on handlers: http://sensuapp.org/docs/0.17/getting-started-with-handlers
