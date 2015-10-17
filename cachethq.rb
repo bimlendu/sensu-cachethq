@@ -70,11 +70,11 @@ class CachetHQ < Sensu::Handler
   end
 
   def component_id
-    @event['check']['cachethq']['component']['id']
+    @event['client']['cachethq']['component']['id'] || @event['check']['cachethq']['component']['id']
   end
 
   def component_name
-    @event['check']['cachethq']['component']['name']
+    @event['client']['cachethq']['component']['name'] || @event['check']['cachethq']['component']['name']
   end
 
   def component_status
