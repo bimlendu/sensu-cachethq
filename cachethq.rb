@@ -106,6 +106,9 @@ class CachetHQ < Sensu::Handler
   def check_for_duplicate_incidents(name, msg, status)
     uri = URI.parse(api_url + '/incidents')
     http = Net::HTTP.new(uri.host, uri.port)
+    if uri.port == 443
+      http.use_ssl = true
+    end
     request = Net::HTTP::Get.new(uri.request_uri)
     response = http.request(request)
     result = JSON.parse(response.body)
@@ -119,6 +122,9 @@ class CachetHQ < Sensu::Handler
     uri = URI.parse(api_url + route)
     headers = { 'Content-Type' => 'application/json', 'X-Cachet-Token' => api_token }
     http = Net::HTTP.new(uri.host, uri.port)
+    if uri.port == 443
+      http.use_ssl = true
+    end
     if route.match('components')
       request = Net::HTTP::Put.new(uri.request_uri, headers)
     elsif route.match('incidents')
